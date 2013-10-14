@@ -1,0 +1,92 @@
+# .bashrc
+
+# Keyboard speed
+# xset r rate 220 160
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# User specific aliases and functions
+
+export PATH=$PATH:$HOME/bin
+export EDITOR=/usr/bin/vim
+export PATH=$PATH:$HOME/.scripts/bin # Add a general bash scripting path
+
+function assume() {
+    update-index --assume-unchanged
+}
+function unassume() {
+    update-index --no-assume-unchanged
+}
+function assumed() {
+    git ls-files -v | grep h
+}
+
+function lt() {
+    ls -ltrsa "$@" | tail;
+}
+function psgrep() {
+    ps axuf | grep -v grep | grep "$@" -i --color=auto;
+}
+
+function fname() {
+    find . -iname "*$@*";
+}
+
+function passwdgen() {
+    < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;
+}
+
+function gs() {
+    git submodule foreach --recursive $@ && $@
+}
+
+function rgrep() {
+    grep -Ir --exclude-from=$HOME/.rgrep-excludes --color $@ .
+}
+
+alias vi='/usr/bin/vim'
+
+wless(){
+    wget -q -O - --save-headers $* | less
+}
+case "$TERM" in
+    xterm*|rxvt*|screen*)
+    color_prompt=yes
+    ;;  
+esac
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    if [ `id -u` = 0 ]; then
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\$\[\033[00m\] '
+    else
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\$\[\033[00m\] '
+    fi
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+alias git_update_all='for d in `find -type d -name \.git` ; do cd ${d%%.git} && echo "Updating ${d%%.git}" && git pull && cd - ; done'
+
+[[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc # multiple python installations
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+
+# set vi keybindings instead of emacs
+#set -o vi

@@ -1,0 +1,14 @@
+defutf8 on
+caption always "%{= kK} %{K}%-w%{+b w}%51>%n %t%{= K}%+w%<%-=%{= kK} __user__ | %{w}20%y-%m-%d %{w}%0c:%s %{-}"
+shelltitle '$|$'
+defscrollback 10000
+termcap xterm|xterms|xs ti=\E7\E[?47l
+terminfo xterm|xterms|xs ti=\E7\E[?47l
+startup_message off
+screen -t vim       0   
+screen -t git       1   
+screen -t CL        2   
+screen -t ipython   3   ipython
+screen -t finch     4   finch
+screen -t mutt      5   mutt
+screen -t top       6   top
