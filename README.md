@@ -1,7 +1,7 @@
 UbuntuUser
 ==========
 
-This script is designed to quickly build up a highly functional user account 
+setup.sh is designed to quickly build up a highly functional user account 
 for a vim user on Ubuntu 12.04+. It is written an maintained so that the 
 project owner (jarederaj) can quickly configure new servers and virtual 
 machines that have an internet connection. It is highly recommended that you 
