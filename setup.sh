@@ -82,8 +82,7 @@ if [ $(id -u) != "0" ] ; then
   openssh-server \
   php-pear \
   python \
-  python-devel \
-  python-pip \
+  python-dev \
   ipython \
   ruby \
   rake \
@@ -156,6 +155,8 @@ if [ $(id -u) != "0" ] ; then
   echo "##"
   echo "############################################################################"
   
+  xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+
   mkdir -p $HOME/.scripts/bin
   cp -r bin/* ~/.scripts/bin
   
@@ -216,6 +217,7 @@ EOL
   
   read IDENTIFIER
   `sed -i 's|__user__|'$IDENTIFIER'|g' $HOME/.screenrc`
+
   
 else
   echo "############################################################################"
