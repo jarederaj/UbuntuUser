@@ -1,8 +1,5 @@
 # .bashrc
 
-# Keyboard speed
-# xset r rate 220 160
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
@@ -47,6 +44,9 @@ function rgrep() {
     grep -Ir --exclude-from=$HOME/.rgrep-excludes --color $@ .
 }
 
+function vgrep() {
+    vim -p `grep -Ril --exclude-from=$HOME/.rgrep-excludes  $@ .`
+}
 alias vi='/usr/bin/vim'
 
 wless(){
@@ -79,8 +79,15 @@ else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
+function say() { mplayer -really-quiet "http://translate.google.com/translate_tts?tl=en&q=$*"; }
+
+alias convert_all='for d in `ls *.xls` ;  do echo "\nConverting ${d%%} to csv:\n" && ssconvert ${d%%} ${d%%.csv} ; done'
 
 alias git_update_all='for d in `find -type d -name \.git` ; do cd ${d%%.git} && echo "Updating ${d%%.git}" && git pull && cd - ; done'
+
+alias chrome-xss='google-chrome --args --disable-web-security --allow-file-access-from-files'
+alias chromi-xss='chromium-browser --args --disable-web-security --allow-file-access-from-files'
+alias firefox-xss='firefox --disable-web-security'
 
 [[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc # multiple python installations
 
@@ -90,3 +97,7 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 # set vi keybindings instead of emacs
 #set -o vi
+
+xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+
+

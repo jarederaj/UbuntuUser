@@ -16,7 +16,6 @@
 " Enable loading filetype and indentation plugins
 filetype plugin on
 filetype indent on
-
 " ------------------------------------------------------------------------------
 " Completion
 "   :help ins-completion
@@ -110,6 +109,7 @@ set pastetoggle=<C-o>
   set dir=~/tmp                       " swap file directory
   set ff=dos
   set cursorline  				      " highlight current line
+  set lazyredraw                      " fast macros
 " ------------------------------------------------------------------------------
 " Make vim turn *off* expandtab for files named Makefile or makefile
 " We need the tab literal
@@ -152,7 +152,7 @@ set pastetoggle=<C-o>
   map <C-F> 080lF a0
 
   " Single-quote the current word (cursor has to be at beginning of word)
-  map <Leader>q i'<Esc>ea'<Esc>F'
+  map <Leader>s i'<Esc>ea'<Esc>F'
 
   " Double-quote the current word (cursor has to be at beginning of word)
   map <Leader>Q i"<Esc>ea"<Esc>F"
@@ -167,10 +167,7 @@ set pastetoggle=<C-o>
   map <Leader>S 0mxk$%k^>`x
 
   " Un-indent curly block
-  map <Leader>s 0mxk$%k^<`x
-
-  " Delete line and move down
-  map <Leader>d dd}
+  " map <Leader>s 0mxk$%k^<`x
 
   " Go to tab 1-5
   map <Leader>1 1gt
@@ -180,6 +177,8 @@ set pastetoggle=<C-o>
   map <Leader>5 5gt
   map <Leader>b i<Cr><Esc>
 
+  map <Leader>d :Dbg - <Cr>
+  map <Leader>q :Dbg quit <Cr>
   " tab navigation like firefox
   "nmap <tab> :tabnext<Cr>
   "nmap <S-tab> :tabprevious<CR>
@@ -224,6 +223,28 @@ endfunction
 
 vmap * :<C-u>call <SID>VSetSearch()<CR>//<CR>
 vmap # :<C-u>call <SID>VSetSearch()<CR>??<CR>
+
+let @y ='"bPjddn'
+let @m =':try|exe "norm! 20@y"|endtry|'
+let @v ='v$hhh*N1gtggn"byy2gt'
+" 
+"let @p =':try|exe "norm! @k"|endtry'
+"let @n ='v$*@m'
+let @k ='@v@m'
+"c = "bPjddn
+"d = 20@c
+"e = v$*@d
+"a = ^v$hhh*N€kBggn"byy	
+"w = @a@e
+"x = /-\n[a-zA-Z].*-\nj^@w
+map <leader>z /\n[a-zA-Z].*\s[a-zA-Z].*-\n<CR>
+let @p =':try|exe "norm! @k"|endtry'
+map <leader>q @o
+map <leader>x \q
+let @o ='\zj^@v@k'
+let @r ='\x@r'
+
+"<CR>:try|j^@k||'
 
 " recursively vimgrep for word under cursor or selection if you hit leader-star
 nmap <leader>* :execute 'noautocmd vimgrep /\V' . substitute(escape(expand("<cword>"), '\'), '\n', '\\n', 'g') . '/ **'<CR>
@@ -282,6 +303,7 @@ Bundle 'ervandew/supertab.git'
 " tested this but didn't decide if I like it.
 "Bundle 'vim-php/phptags.git'
 Bundle 'majutsushi/tagbar.git'
+Bundle 'chrisbra/csv.vim.git'
 Bundle 'mileszs/ack.vim.git'
 Bundle 'vim-scripts/c.vim.git'
 Bundle 'vim-scripts/CRefVim.git'
@@ -353,6 +375,14 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 " Don't autofold code
 let g:pymode_folding = 0
 
+" Don't auto codesniff                                                                                                                                                          
+let g:phpqa_codesniffer_autorun = 0
+
+" Enforce PSR-1 Coding standards
+let g:phpqa_codesniffer_args = "--standard=PSR1"
+
+let g:phpqa_messdetector_ruleset = "/home/jared/.phpmd.xml"
+
 
 " ------------------------------------------------------------------------------
 " Performance improvement: low hanging fruit
@@ -361,3 +391,4 @@ let g:pymode_folding = 0
 "Turn syntax highlighting on
 syntax on
 " set synmaxcol=200
+"

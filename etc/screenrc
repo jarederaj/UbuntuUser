@@ -9,6 +9,7 @@ screen -t vim       0
 screen -t git       1   
 screen -t CL        2   
 screen -t ipython   3   ipython
-screen -t finch     4   finch
-screen -t mutt      5   mutt
-screen -t top       6   top
+screen -t finch     4   
+screen -t mutt      5   
+screen -t top       6   
+screen -t tether    7
